@@ -25,5 +25,7 @@ export function solveArea(puzzle: AreaPuzzle, width: number): AreaReward | null 
   if (!Number.isFinite(width) || width !== snapWidth(puzzle, width)) return null
   const share = plotSize(puzzle, width) / bestArea(puzzle)
   if (share < puzzle.threshold) return null
-  return { code: 'area', rate: Math.round((1 + share * (gameConfig.area.maxBoost - 1)) * 10) / 10 }
+  const { maxBoost, boostDecimals } = gameConfig.area
+  const rate = 1 + share * (maxBoost - 1)
+  return { code: 'area', rate: Number(rate.toFixed(boostDecimals)) }
 }

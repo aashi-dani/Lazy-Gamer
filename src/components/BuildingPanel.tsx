@@ -41,7 +41,7 @@ export default function BuildingPanel({ id, town, onCollect, onUnlock, onUpgrade
           {rate > 1 && <strong className="text-lime">{rate}× · {duration(building.boost!.endsAt - town.lastAt)}</strong>}
         </div>
         <button className="button gold-button collect-button" disabled={!building.stock} onClick={onCollect}>
-          <Icon name="box" size={20} /> {building.stock ? 'Collect stock' : 'Batch brewing'} 
+          <Icon name="box" size={20} /> {building.stock ? 'Collect stock' : 'Batch brewing'}
           {building.stock > 0 && <span className="sale-value"><Coin size={17} /> +{building.stock * config.salePrice}</span>}
         </button>
       </div>

@@ -13,7 +13,7 @@ type GameStore = {
   collect: (building: BuildingId) => void
   unlock: (building: BuildingId) => void
   upgrade: (building: BuildingId) => void
-  claimCode: (building: BuildingId, reward: CheatReward) => boolean
+  claimCode: (building: BuildingId, reward: CheatReward) => { stockAdded: number } | null
   toggleSound: () => void
   reset: () => void
 }
@@ -47,13 +47,15 @@ export const useGameStore = create<GameStore>()(persist((set) => {
     unlock: (id) => change((town) => unlockBuilding(town, id)),
     upgrade: (id) => change((town) => upgradeBuilding(town, id)),
     claimCode: (id, reward) => {
-      let claimed = false
+      let receipt: { stockAdded: number } | null = null
       change((town) => {
         const result = applyReward(town, id, reward)
-        claimed = result !== town
+        if (result !== town) {
+          receipt = { stockAdded: (result.buildings[id]?.stock ?? 0) - (town.buildings[id]?.stock ?? 0) }
+        }
         return result
       })
-      return claimed
+      return receipt
     },
     toggleSound: () => change((town) => ({ ...town, sound: !town.sound })),
     reset: () => set({ town: emptyTown(Date.now()) }),

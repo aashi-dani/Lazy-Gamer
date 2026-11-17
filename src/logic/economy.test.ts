@@ -58,5 +58,8 @@ describe('town economy', () => {
     expect(saved.coins).toBe(0)
     expect(saved.buildings.coconut).toMatchObject({ level: 1, stock: 12, progress: 0 })
     expect(saved.buildings.bike).toBeUndefined()
+    const invalidTime = readTown({ band: 'explorer', lastAt: Number.MAX_SAFE_INTEGER, history: [{ at: Number.MAX_SAFE_INTEGER, total: 0 }] }, now)
+    expect(invalidTime.lastAt).toBe(now)
+    expect(invalidTime.history).toEqual([])
   })
 })

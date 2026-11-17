@@ -22,9 +22,9 @@ export const ageBands = {
 export type AgeBand = keyof typeof ageBands
 
 export const cheats = {
-  macro: { name: 'Multiplication Macro', icon: 'boxes', description: 'Stack crates to fill a shipment.', reward: 'Instant batch', cooldown: 5 * minute },
-  area: { name: 'Area Optimizer', icon: 'fence', description: 'Stretch a fence around a bigger plot.', reward: 'Speed boost', cooldown: areaBoostDuration },
-  fraction: { name: 'Fraction Slicer', icon: 'slice', description: 'Slice up a treat to fill an order.', reward: 'Bonus coins', cooldown: 5 * minute },
+  macro: { name: 'Multiplication Macro', icon: 'boxes', reward: 'Instant batch', cooldown: 5 * minute },
+  area: { name: 'Area Optimizer', icon: 'fence', reward: 'Speed boost', cooldown: areaBoostDuration },
+  fraction: { name: 'Fraction Slicer', icon: 'slice', reward: 'Bonus coins', cooldown: 5 * minute },
 } as const
 
 export const gameConfig = {
@@ -54,6 +54,7 @@ export const gameConfig = {
   area: {
     boostDuration: areaBoostDuration,
     maxBoost: 3,
+    boostDecimals: 3,
     tiers: {
       easy: { min: 5, max: 8, threshold: 0.82, step: 1 },
       medium: { min: 8, max: 15, threshold: 0.93, step: 1 },

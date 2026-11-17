@@ -26,6 +26,8 @@ describe('Area Optimizer', () => {
   it('gives a larger boost for settling on a larger plot', () => {
     const easy = makeArea('easy', .999)
     expect(solveArea(easy, 3)?.rate).toBeLessThan(solveArea(easy, 4)!.rate)
+    const hard = makeArea('hard', .999)
+    expect(solveArea(hard, 9.5)?.rate).toBeLessThan(solveArea(hard, 10)!.rate)
   })
 
   it('sets a timed boost and rejects repeat claims until its cooldown ends', () => {

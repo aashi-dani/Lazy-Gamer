@@ -13,13 +13,18 @@ function count(value: unknown, fallback = 0, max?: number) {
   return Math.floor(number(value, fallback, max))
 }
 
+function timestamp(value: unknown, fallback = 0) {
+  const time = count(value, fallback)
+  return Number.isFinite(new Date(time).getTime()) ? time : fallback
+}
+
 export function readTown(value: unknown, now: number): TownSave {
   const save = record(value)
   const band = typeof save.band === 'string' && Object.hasOwn(ageBands, save.band) ? save.band as AgeBand : null
   const sound = save.sound === true
   if (!band) return { ...emptyTown(now), sound }
 
-  const lastAt = count(save.lastAt, now)
+  const lastAt = timestamp(save.lastAt, now)
   const townBuildings = record(save.buildings)
   const normalized: TownSave['buildings'] = {}
   for (const id of buildingIds) {
@@ -29,11 +34,11 @@ export function readTown(value: unknown, now: number): TownSave {
     const cooldowns: BuildingState['cooldowns'] = {}
     const oldCooldowns = record(source.cooldowns)
     for (const code of cheatIds) {
-      const endsAt = count(oldCooldowns[code])
+      const endsAt = timestamp(oldCooldowns[code])
       if (endsAt > lastAt) cooldowns[code] = endsAt
     }
     const oldBoost = record(source.boost)
-    const endsAt = count(oldBoost.endsAt)
+    const endsAt = timestamp(oldBoost.endsAt)
     const rate = number(oldBoost.rate, 1, gameConfig.area.maxBoost)
     const cap = storageCap(id, level)
     const stock = count(source.stock, 0, cap)
@@ -50,7 +55,7 @@ export function readTown(value: unknown, now: number): TownSave {
   if (Array.isArray(save.history)) {
     for (const item of save.history.slice(-gameConfig.historyLimit)) {
       const point = record(item)
-      const at = count(point.at)
+      const at = timestamp(point.at)
       const total = count(point.total, 0, earned)
       const previous = history.at(-1)
       if (at > (previous?.at ?? 0) && total >= (previous?.total ?? 0)) history.push({ at, total })

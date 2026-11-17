@@ -1,7 +1,6 @@
 import { buildings, cheats, gameConfig, type BuildingId } from '../../config/gameConfig'
 import { earnCoins, storageCap, withBuilding, type TownSave } from '../economy'
 import type { MacroReward } from './multiplicationMacro'
-
 import type { AreaReward } from './areaOptimizer'
 import type { FractionReward } from './fractionSlicer'
 
