@@ -3,7 +3,7 @@ import type { BuildingState } from '../logic/economy'
 import { duration } from './BuildingPanel'
 import { Icon } from './Icon'
 
-const available: CheatId[] = ['macro']
+const available: CheatId[] = ['macro', 'area']
 
 export default function CheatCodeList({ building, now, full, open }: {
   building: BuildingState

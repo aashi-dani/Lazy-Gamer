@@ -188,3 +188,11 @@ button.map-building:active .building-art { transform: translateY(2px) scale(.98)
 .spark-burst { position: relative; display: grid; place-items: center; width: 76px; height: 76px; color: #294157; background: var(--lime); border: 3px solid #e5ffaf; border-radius: 26px; box-shadow: 0 0 24px #b4ed7e44; }
 .spark-burst span { position: absolute; display: grid; place-items: center; inset: 0; color: var(--gold); transform: rotate(var(--ray)) translateY(-51px) rotate(calc(var(--ray) * -1)); animation: spark-out .7s var(--delay) ease-out both; pointer-events: none; }
 @keyframes spark-out { from { transform: rotate(var(--ray)) translateY(0) scale(.3); opacity: 0; } 40% { opacity: 1; } }
+
+.plot-board { padding: 6px; }
+.plot-board svg { width: 100%; height: min(205px, 32dvh); display: block; touch-action: none; cursor: ew-resize; }
+.plot-controls { display: flex; justify-content: center; align-items: center; gap: 14px; }
+.plot-controls > span { min-width: 120px; text-align: center; }
+.plot-controls strong, .plot-controls small { display: block; }
+.plot-controls small { font-size: 12px; }
+.plot-controls button:disabled { opacity: .48; }

@@ -1,4 +1,5 @@
 const minute = 60_000
+const areaBoostDuration = 10 * minute
 
 export const buildings = {
   coconut: { name: 'Coconut Stall', stockName: 'coconuts', stockUnit: 'coconut', color: '#ffd28d', price: 180, salePrice: 24, batchSize: 2, capacity: 12 },
@@ -22,7 +23,7 @@ export type AgeBand = keyof typeof ageBands
 
 export const cheats = {
   macro: { name: 'Multiplication Macro', icon: 'boxes', description: 'Stack crates to fill a shipment.', reward: 'Instant batch', cooldown: 5 * minute },
-  area: { name: 'Area Optimizer', icon: 'fence', description: 'Stretch a fence around a bigger plot.', reward: 'Speed boost', cooldown: 5 * minute },
+  area: { name: 'Area Optimizer', icon: 'fence', description: 'Stretch a fence around a bigger plot.', reward: 'Speed boost', cooldown: areaBoostDuration },
   fraction: { name: 'Fraction Slicer', icon: 'slice', description: 'Slice up a treat to fill an order.', reward: 'Bonus coins', cooldown: 5 * minute },
 } as const
 
@@ -51,7 +52,7 @@ export const gameConfig = {
     },
   },
   area: {
-    boostDuration: 10 * minute,
+    boostDuration: areaBoostDuration,
     maxBoost: 3,
     tiers: {
       easy: { min: 5, max: 8, threshold: 0.82, step: 1 },

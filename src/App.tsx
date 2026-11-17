@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import CheatCodeList from './components/CheatCodeList'
 import CheatCodeModal from './components/CheatCodeModal'
-import BuildingPanel from './components/BuildingPanel'
+import BuildingPanel, { duration } from './components/BuildingPanel'
 import { Coin, Icon } from './components/Icon'
 import Mascot, { MascotArt } from './components/Mascot'
 import Onboarding from './components/Onboarding'
@@ -85,6 +85,7 @@ export default function App() {
         const store = useGameStore.getState()
         const before = store.town.buildings[active]?.stock ?? 0
         if (!store.claimCode(active, reward)) return null
+        if (reward.code === 'area') return `${reward.rate}× production for ${duration(gameConfig.area.boostDuration)}!`
         const added = (useGameStore.getState().town.buildings[active]?.stock ?? 0) - before
         const unit = added === 1 ? buildings[active].stockUnit : buildings[active].stockName
         return `+${added} ${unit} ready to collect!`

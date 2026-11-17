@@ -3,6 +3,7 @@ import { cheats, type CheatId, type Difficulty } from '../config/gameConfig'
 import type { CheatReward } from '../logic/cheatCodes/rewards'
 import { Coin, Icon } from './Icon'
 import Modal from './Modal'
+import AreaOptimizer from './cheatCodes/AreaOptimizer'
 import MultiplicationMacro from './cheatCodes/MultiplicationMacro'
 
 export default function CheatCodeModal({ code, difficulty, dismiss, claim }: {
@@ -27,6 +28,7 @@ export default function CheatCodeModal({ code, difficulty, dismiss, claim }: {
     </div> : <>
       <p className="code-difficulty">{difficulty}</p>
       {code === 'macro' && <MultiplicationMacro difficulty={difficulty} onWin={onWin} />}
+      {code === 'area' && <AreaOptimizer difficulty={difficulty} onWin={onWin} />}
     </>}
   </Modal>
 }
