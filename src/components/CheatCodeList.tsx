@@ -1,9 +1,7 @@
-import { cheats, type CheatId } from '../config/gameConfig'
+import { cheats, cheatIds, type CheatId } from '../config/gameConfig'
 import type { BuildingState } from '../logic/economy'
 import { duration } from './BuildingPanel'
 import { Icon } from './Icon'
-
-const available: CheatId[] = ['macro', 'area']
 
 export default function CheatCodeList({ building, now, full, open }: {
   building: BuildingState
@@ -13,7 +11,7 @@ export default function CheatCodeList({ building, now, full, open }: {
 }) {
   return <div className="codes">
     <h3><Icon name="spark" size={19} /> Cheat codes</h3>
-    {available.map((id) => {
+    {cheatIds.map((id) => {
       const code = cheats[id]
       const wait = (building.cooldowns[id] ?? 0) - now
       const cooling = wait > 0

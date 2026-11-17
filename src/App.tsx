@@ -86,6 +86,7 @@ export default function App() {
         const before = store.town.buildings[active]?.stock ?? 0
         if (!store.claimCode(active, reward)) return null
         if (reward.code === 'area') return `${reward.rate}× production for ${duration(gameConfig.area.boostDuration)}!`
+        if (reward.code === 'fraction') return `+${reward.coins} coins for the order!`
         const added = (useGameStore.getState().town.buildings[active]?.stock ?? 0) - before
         const unit = added === 1 ? buildings[active].stockUnit : buildings[active].stockName
         return `+${added} ${unit} ready to collect!`

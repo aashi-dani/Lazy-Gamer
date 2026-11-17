@@ -64,7 +64,7 @@ export const gameConfig = {
     tiers: {
       easy: { min: 2, max: 4, equivalent: false, orders: 1, coins: 40 },
       medium: { min: 3, max: 6, equivalent: true, orders: 1, coins: 65 },
-      hard: { min: 4, max: 6, equivalent: true, orders: 2, coins: 100 },
+      hard: { min: 6, max: 8, equivalent: true, orders: 2, coins: 100 },
     },
   },
 }

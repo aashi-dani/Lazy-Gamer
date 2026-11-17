@@ -196,3 +196,13 @@ button.map-building:active .building-art { transform: translateY(2px) scale(.98)
 .plot-controls strong, .plot-controls small { display: block; }
 .plot-controls small { font-size: 12px; }
 .plot-controls button:disabled { opacity: .48; }
+
+.order-slip { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: #35304c; border: 1px dashed #796988; border-radius: 12px; padding: 7px 12px; color: #f2d9ee; font-weight: 900; }
+.fraction { display: inline-grid; text-align: center; line-height: 1.12; min-width: 24px; }
+.fraction span:first-child { border-bottom: 1px solid #e9d7ec; }
+.slice-board { display: grid; justify-items: center; gap: 3px; padding: 7px 0; }
+.treat { position: relative; width: min(208px, 100%); }
+.treat svg { width: 100%; display: block; }
+.slice-hit { position: absolute; top: var(--y); left: var(--x); transform: translate(-50%, -50%); display: grid; place-items: center; min-width: 44px; min-height: 44px; border-radius: 50%; color: #47283d; font-weight: 950; }
+.slice-hit :is(span, svg) { width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; background: #ffdfbb; line-height: 1; }
+.slice-hit[aria-pressed="true"] svg { padding: 3px; background: #fdefbb; }

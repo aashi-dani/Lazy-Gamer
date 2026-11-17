@@ -36,3 +36,4 @@ Phase order: setup, core economy and saves, town and onboarding, each cheat code
 - Phase 3: Onboarding, original town and shop art, stock controls, and Welcome Back dialog. Browser verified starter selection, a 48-coin sale across a reload, and four stock from a simulated four-hour absence.
 - Phase 4a: Multiplication Macro includes generated crate arrays, efficient-move bonus, storage cap, cooldown, and shared celebration. Nine tests pass.
 - Phase 4b: Area Optimizer adds a draggable fixed-fence plot, adjustable keyboard controls, a 10-minute boost and matching cooldown. Thirteen tests pass.
+- Phase 4c: Fraction Slicer adds equal slices, equivalent orders, and bonus coins across all three difficulty tiers. Sixteen tests pass.
