@@ -2,6 +2,8 @@
 
 Build a sleepy little town, collect stock, and crack three visual cheat codes. Your town is saved in the browser.
 
+[Play Lazy Gamer](https://lazygamer.vercel.app/)
+
 ## Play locally
 
 1. Open Terminal in this project folder.
