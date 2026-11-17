@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
+import CheatCodeList from './components/CheatCodeList'
+import CheatCodeModal from './components/CheatCodeModal'
 import BuildingPanel from './components/BuildingPanel'
 import { Coin, Icon } from './components/Icon'
 import Mascot, { MascotArt } from './components/Mascot'
 import Onboarding from './components/Onboarding'
 import Town from './components/Town'
 import WelcomeBack from './components/WelcomeBack'
-import { buildingIds, gameConfig, type BuildingId } from './config/gameConfig'
-import { advanceTown } from './logic/economy'
+import { ageBands, buildingIds, buildings, gameConfig, type BuildingId, type CheatId } from './config/gameConfig'
+import { advanceTown, storageCap } from './logic/economy'
 import { useGameStore } from './store/gameStore'
 
 export default function App() {
@@ -14,9 +16,11 @@ export default function App() {
   const [now, setNow] = useState(Date.now)
   const [selected, setSelected] = useState<BuildingId>()
   const [welcome, setWelcome] = useState(0)
+  const [code, setCode] = useState<CheatId>()
   const town = advanceTown(stored, Math.max(now, stored.lastAt)).town
   const starter = buildingIds.find((id) => town.buildings[id])
   const active = selected ?? starter
+  const activeBuilding = active && town.buildings[active]
 
   useEffect(() => {
     const tick = () => setNow(Date.now())
@@ -69,11 +73,22 @@ export default function App() {
           {starter && <Mascot>Tap a shop to see what’s in stock.</Mascot>}
         </div>
         {starter && active
-          ? <BuildingPanel id={active} town={town} onCollect={() => useGameStore.getState().collect(active)} onUnlock={() => useGameStore.getState().unlock(active)} onUpgrade={() => useGameStore.getState().upgrade(active)} />
+          ? <BuildingPanel id={active} town={town} onCollect={() => useGameStore.getState().collect(active)} onUnlock={() => useGameStore.getState().unlock(active)} onUpgrade={() => useGameStore.getState().upgrade(active)}>
+            {activeBuilding && <CheatCodeList building={activeBuilding} now={town.lastAt} full={activeBuilding.stock >= storageCap(active, activeBuilding.level)} open={setCode} />}
+          </BuildingPanel>
           : <Onboarding band={town.band} chooseBand={(band) => useGameStore.getState().setBand(band)}
               chooseBuilding={(id) => { useGameStore.getState().start(id); setSelected(id) }} />}
       </div>
     </main>
+    {code && active && town.band && <CheatCodeModal code={code} difficulty={ageBands[town.band].difficulty} dismiss={() => setCode(undefined)}
+      claim={(reward) => {
+        const store = useGameStore.getState()
+        const before = store.town.buildings[active]?.stock ?? 0
+        if (!store.claimCode(active, reward)) return null
+        const added = (useGameStore.getState().town.buildings[active]?.stock ?? 0) - before
+        const unit = added === 1 ? buildings[active].stockUnit : buildings[active].stockName
+        return `+${added} ${unit} ready to collect!`
+      }} />}
     {welcome > 0 && <WelcomeBack stock={welcome} dismiss={() => setWelcome(0)} />}
   </>
 }

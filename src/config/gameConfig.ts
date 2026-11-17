@@ -43,7 +43,7 @@ export const gameConfig = {
   historyLimit: 90,
   macro: {
     efficientReward: 2,
-    maxEfficientMoves: 1,
+    maxEfficientMoves: 2,
     tiers: {
       easy: { min: 2, max: 5 },
       medium: { min: 3, max: 8 },

@@ -3,6 +3,7 @@ import { createJSONStorage, persist, type StateStorage } from 'zustand/middlewar
 import { buildingIds, gameConfig, type AgeBand, type BuildingId } from '../config/gameConfig'
 import { advanceTown, emptyTown, newBuilding, sellStock, unlockBuilding, upgradeBuilding, withBuilding, type TownSave } from '../logic/economy'
 import { readTown } from '../logic/save'
+import { applyReward, type CheatReward } from '../logic/cheatCodes/rewards'
 
 type GameStore = {
   town: TownSave
@@ -12,6 +13,7 @@ type GameStore = {
   collect: (building: BuildingId) => void
   unlock: (building: BuildingId) => void
   upgrade: (building: BuildingId) => void
+  claimCode: (building: BuildingId, reward: CheatReward) => boolean
   toggleSound: () => void
   reset: () => void
 }
@@ -44,6 +46,15 @@ export const useGameStore = create<GameStore>()(persist((set) => {
     collect: (id) => change((town) => sellStock(town, id)),
     unlock: (id) => change((town) => unlockBuilding(town, id)),
     upgrade: (id) => change((town) => upgradeBuilding(town, id)),
+    claimCode: (id, reward) => {
+      let claimed = false
+      change((town) => {
+        const result = applyReward(town, id, reward)
+        claimed = result !== town
+        return result
+      })
+      return claimed
+    },
     toggleSound: () => change((town) => ({ ...town, sound: !town.sound })),
     reset: () => set({ town: emptyTown(Date.now()) }),
   }

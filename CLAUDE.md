@@ -34,3 +34,4 @@ Phase order: setup, core economy and saves, town and onboarding, each cheat code
 - Phase 1: Vite scaffold, design tokens, Git root and intended origin configured.
 - Phase 2: Versioned Zustand save, production, stock caps, sales, building unlocks, and upgrades implemented. Six economy and save tests pass.
 - Phase 3: Onboarding, original town and shop art, stock controls, and Welcome Back dialog. Browser verified starter selection, a 48-coin sale across a reload, and four stock from a simulated four-hour absence.
+- Phase 4a: Multiplication Macro includes generated crate arrays, efficient-move bonus, storage cap, cooldown, and shared celebration. Nine tests pass.

@@ -157,3 +157,34 @@ button.map-building:active .building-art { transform: translateY(2px) scale(.98)
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
 }
+
+.codes { display: grid; gap: 7px; padding: 0 15px 14px; }
+.codes h3 { display: flex; align-items: center; gap: 6px; color: var(--cyan); font-weight: 950; font-size: 13px; }
+.code-tile { display: grid; align-items: center; grid-template-columns: auto minmax(0, 1fr) auto; text-align: left; gap: 8px; padding: 5px 8px; min-height: 51px; border: 1px solid #4c7d88; background: #2b4054; color: var(--cyan); border-radius: 11px; box-shadow: inset 0 0 12px #87f3ee0d; }
+.code-tile:active:not(:disabled) { background: #3a5b70; }
+.code-tile:disabled { border-color: #48485e; background: #2d2c44; color: var(--muted); }
+.code-icon { display: grid; place-items: center; height: 33px; width: 33px; border-radius: 8px; background: #1f303f; }
+.code-tile:disabled .code-icon { background: #25243b; }
+.code-tile strong, .code-tile small { display: block; }
+.code-tile strong { color: var(--ink); font-size: 13px; font-weight: 950; line-height: 1.2; }
+.code-tile small { font-size: 11px; margin-top: 2px; }
+.code-difficulty { margin: -5px 0 6px; color: var(--cyan); font-weight: 950; text-transform: capitalize; font-size: 12px; }
+.puzzle { display: grid; gap: 11px; color: var(--muted); font-size: 15px; }
+.puzzle strong { color: var(--ink); }
+.puzzle-board { background: #191a31; border: 1px solid #403c5d; border-radius: 13px; }
+.crate-board { display: grid; justify-items: center; gap: 8px; padding: 12px; }
+.crate-grid { width: min(100%, calc(var(--columns) * 33px)); min-height: 37px; display: grid; gap: 3px; grid-template-columns: repeat(var(--columns), minmax(0, 1fr)); }
+.crate { aspect-ratio: 1; max-height: min(33px, calc(214px / var(--rows))); display: grid; place-items: center; background: #c78958; border: 1px solid #ecb47c; border-radius: 4px; box-shadow: inset 0 -2px #8a554b; }
+.crate::before { content: ''; display: block; width: 65%; height: 65%; background: linear-gradient(135deg, transparent 45%, #8a554b 46% 54%, transparent 55%); border: 1px solid #96614c; border-radius: 2px; }
+.board-count { font-size: 13px; font-weight: 900; }
+.pair-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pair-controls label { display: grid; gap: 4px; color: var(--ink); font-weight: 900; font-size: 13px; }
+.pair-controls select { min-height: 44px; border: 1px solid #5b5377; border-radius: 9px; color: var(--ink); background: #322f4d; padding: 5px 10px; }
+.puzzle-hint { color: #ffd6ae; min-height: 1px; font-weight: 800; }
+.puzzle-hint:empty { display: none; }
+.cyan-button { background: #97ede5; color: #203642; border: 1px solid #c0fff1; box-shadow: 0 3px #468b93; }
+.code-result { display: grid; justify-items: center; gap: 20px; padding: 15px 0 9px; text-align: center; font-size: 19px; }
+.code-result.won strong { color: var(--lime); }
+.spark-burst { position: relative; display: grid; place-items: center; width: 76px; height: 76px; color: #294157; background: var(--lime); border: 3px solid #e5ffaf; border-radius: 26px; box-shadow: 0 0 24px #b4ed7e44; }
+.spark-burst span { position: absolute; display: grid; place-items: center; inset: 0; color: var(--gold); transform: rotate(var(--ray)) translateY(-51px) rotate(calc(var(--ray) * -1)); animation: spark-out .7s var(--delay) ease-out both; pointer-events: none; }
+@keyframes spark-out { from { transform: rotate(var(--ray)) translateY(0) scale(.3); opacity: 0; } 40% { opacity: 1; } }
