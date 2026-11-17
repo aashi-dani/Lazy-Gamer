@@ -32,3 +32,4 @@ Phase order: setup, core economy and saves, town and onboarding, each cheat code
 ## Current status
 
 - Phase 1: Vite scaffold, design tokens, Git root and intended origin configured.
+- Phase 2: Versioned Zustand save, production, stock caps, sales, building unlocks, and upgrades implemented. Six economy and save tests pass.
