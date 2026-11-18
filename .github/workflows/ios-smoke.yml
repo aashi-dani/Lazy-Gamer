@@ -29,7 +29,7 @@ jobs:
         run: |
           xcodebuild -project ios/App/App.xcodeproj -scheme App \
             -destination 'generic/platform=iOS Simulator' -configuration Debug \
-            -derivedDataPath "$RUNNER_TEMP/LazyGamer" CODE_SIGNING_ALLOWED=NO build
+            -derivedDataPath "$RUNNER_TEMP/LazyGamer" ARCHS="$(uname -m)" CODE_SIGNING_ALLOWED=NO build
       - name: Verify the welcome screen on iPhone and iPad
         run: |
           cat > "$RUNNER_TEMP/Welcome.swift" <<'SWIFT'

@@ -14,7 +14,7 @@ final class GameBridgeViewController: CAPBridgeViewController {
 final class LocalDevicePlugin: CAPPlugin, CAPBridgedPlugin {
     let identifier = "LocalDevicePlugin"
     let jsName = "LocalDevice"
-    let pluginMethods = [
+    let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "read", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "write", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "hashPin", returnType: CAPPluginReturnPromise),
