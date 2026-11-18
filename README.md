@@ -26,6 +26,14 @@ npm run preview
 
 The static production files are in `dist/`. Settings, progress, and stock are saved per device and browser. The web manifest, favicon, Apple touch icon, and maskable install icon are in `public/`.
 
+## Android and iOS
+
+Run `npm run native:sync` to build and copy the game into both Capacitor projects. Open `android/` in Android Studio or `ios/App/App.xcodeproj` in Xcode. To try Android from the command line, use JDK 21 and the Android 16 SDK, then run `./gradlew :app:assembleDebug` from `android/`.
+
+The Android offline test uses a fresh emulator with airplane mode enabled and Wi-Fi off. Run `./gradlew :app:connectedDebugAndroidTest` with that emulator selected. It imports a demo town, sells stock, checks Back and landscape, and verifies the coin balance after reopening.
+
+See the [store checklist](STORE_CHECKLIST.md) and [listing draft](STORE_LISTING.md) for signing, submission and screenshots.
+
 ## Publish
 
 1. Sign in to GitHub as `aashi-dani` and open [lazy-gamer](https://github.com/aashi-dani/lazy-gamer). If it needs to be created, use [New repository](https://github.com/new), name it `lazy-gamer`, and leave README, .gitignore, and license unchecked.

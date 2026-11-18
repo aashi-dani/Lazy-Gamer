@@ -1,0 +1,68 @@
+name: iOS build and launch
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  simulator:
+    runs-on: macos-15
+    timeout-minutes: 20
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build and bundle the game
+        run: |
+          npm run build
+          npx --no-install cap sync ios
+      - name: Compile the simulator app
+        run: |
+          xcodebuild -project ios/App/App.xcodeproj -scheme App \
+            -destination 'generic/platform=iOS Simulator' -configuration Debug \
+            -derivedDataPath "$RUNNER_TEMP/LazyGamer" CODE_SIGNING_ALLOWED=NO build
+      - name: Verify the welcome screen on iPhone and iPad
+        run: |
+          cat > "$RUNNER_TEMP/Welcome.swift" <<'SWIFT'
+          import Foundation
+          import Vision
+
+          let request = VNRecognizeTextRequest()
+          let screenshot = URL(fileURLWithPath: CommandLine.arguments[1])
+          try VNImageRequestHandler(url: screenshot).perform([request])
+          let text = (request.results ?? []).compactMap { $0.topCandidates(1).first?.string }
+              .joined(separator: " ").lowercased()
+          guard text.contains("tap to start") else { exit(1) }
+          SWIFT
+          swiftc "$RUNNER_TEMP/Welcome.swift" -o "$RUNNER_TEMP/check-welcome"
+          for family in iPhone iPad; do
+            device=$(xcrun simctl list devices available --json | python3 -c '
+          import json, sys
+          families = json.load(sys.stdin)["devices"]
+          print(next(device["udid"] for device in families["com.apple.CoreSimulator.SimRuntime.iOS-26-2"]
+                     if device["name"].startswith(sys.argv[1])))
+          ' "$family")
+            xcrun simctl boot "$device"
+            xcrun simctl bootstatus "$device" -b
+            xcrun simctl install "$device" "$RUNNER_TEMP/LazyGamer/Build/Products/Debug-iphonesimulator/App.app"
+            xcrun simctl launch "$device" com.aashidani.lazygamer
+            for attempt in {1..10}; do
+              xcrun simctl io "$device" screenshot "$RUNNER_TEMP/$family.png"
+              if "$RUNNER_TEMP/check-welcome" "$RUNNER_TEMP/$family.png"; then
+                echo "$family welcome screen confirmed"
+                break
+              fi
+              sleep 2
+            done
+            "$RUNNER_TEMP/check-welcome" "$RUNNER_TEMP/$family.png"
+            xcrun simctl shutdown "$device"
+          done

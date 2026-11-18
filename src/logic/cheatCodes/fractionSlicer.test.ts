@@ -1,35 +1,36 @@
-import { describe, expect, it } from 'vitest'
-import { cheats } from '../../config/gameConfig'
-import { emptyTown, newBuilding, withBuilding } from '../economy'
-import { fillsOrder, makeSlicer, solveSlicer } from './fractionSlicer'
-import { applyReward } from './rewards'
+import { expect, it } from 'vitest'
+import { tiers } from '../difficulty'
+import { generateSlicer, validateSlicer } from './fractionSlicer'
 
-describe('Fraction Slicer', () => {
-  it('starts with matching slices and adds equivalent fractions and extra orders in later tiers', () => {
-    expect(makeSlicer('easy', [0, 0, 0])).toMatchObject({ pieces: 2, orders: [{ numerator: 1, denominator: 2 }], coins: 40 })
-    expect(makeSlicer('medium', [0, 0, 0])).toMatchObject({ pieces: 4, orders: [{ numerator: 1, denominator: 2 }], coins: 65 })
-    const hard = makeSlicer('hard', [0, 0, 0])
-    expect(hard.pieces).toBe(6)
-    expect(hard.orders).toHaveLength(2)
-    expect(hard.orders[0]).not.toEqual(hard.orders[1])
-    expect(solveSlicer(hard, [3, 2])?.coins).toBe(100)
-    expect(solveSlicer(hard, [3])).toBeNull()
-    expect(solveSlicer(hard, [3, 3])).toBeNull()
-  })
-
-  it('matches equivalent fractions and validates slice counts', () => {
-    const half = { numerator: 1, denominator: 2 }
-    expect(fillsOrder(half, 6, 3)).toBe(true)
-    expect(fillsOrder(half, 6, 2)).toBe(false)
-    expect(fillsOrder(half, 3, 1.5)).toBe(false)
-  })
-
-  it('adds coins and history even when stock is full and rejects repeat rewards', () => {
-    const town = withBuilding(emptyTown(3_000), 'tuck', { ...newBuilding('tuck'), stock: 15 })
-    const reward = { code: 'fraction', coins: 65 } as const
-    const played = applyReward(town, 'tuck', reward)
-    expect(played).toMatchObject({ cracked: 1, earned: 65, coins: 65, history: [{ at: 3_000, total: 65 }] })
-    expect(played.buildings.tuck?.cooldowns.fraction).toBe(3_000 + cheats.fraction.cooldown)
-    expect(applyReward(played, 'tuck', reward)).toBe(played)
-  })
+it.each(tiers)('generates 200 independently solvable Slicer questions at tier %i', (tier) => {
+  const operations = new Set<string>()
+  for (let i = 0; i < 200; i++) {
+    const question = generateSlicer(tier, Math.imul(i + 1, 0x9e3779b9))
+    const { n, d, k, recipe } = question.params
+    expect(k).toBeGreaterThanOrEqual(2)
+    expect(k).toBeLessThanOrEqual(12)
+    expect(k % d).toBe(0)
+    if (tier === 1) expect([2, 4]).toContain(k)
+    if (tier === 2) expect([3, 6, 8]).toContain(k)
+    if (tier === 3) expect(k / d).toBeGreaterThanOrEqual(2)
+    let goal = n / d
+    if (recipe) {
+      operations.add(recipe.method ?? recipe.op)
+      const a = recipe.left.n / recipe.left.d
+      const b = recipe.right.n / recipe.right.d
+      goal = recipe.op === '+' ? a + b : recipe.op === '−' ? a - b : recipe.op === '×' ? a * b : a / b
+      expect(goal).toBeCloseTo(n / d, 12)
+      if (recipe.marked !== undefined) {
+        expect(recipe.marked).toBeCloseTo((recipe.method === 'mixed' ? a % 1 : a) * k, 12)
+        expect(recipe.marked).toBeLessThan(k)
+        expect(validateSlicer(question, k, question.answer.serve, 0)).toBe(false)
+      }
+    }
+    expect(question.answer.cut).toBe(k)
+    expect(question.answer.serve).toBe(Math.round(goal * k))
+    expect(validateSlicer(question, k, question.answer.serve, recipe?.marked)).toBe(true)
+    expect(validateSlicer(question, k - 1, question.answer.serve, recipe?.marked)).toBe(false)
+    expect(validateSlicer(question, k, 0, recipe?.marked)).toBe(false)
+  }
+  expect([...operations].sort()).toEqual(tier === 5 ? ['mixed', 'part', 'quotient', 'share'] : tier === 4 ? ['+', '−'] : [])
 })

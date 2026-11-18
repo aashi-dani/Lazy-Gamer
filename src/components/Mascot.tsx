@@ -1,3 +1,7 @@
+import type { Pet } from '../data/profile'
+import { PetArt } from './Guide'
+import { playSound } from './sound'
+
 export function MascotArt({ className }: { className?: string }) {
   return <svg aria-hidden="true" className={className} viewBox="0 0 100 92" fill="none">
     <path d="M13 66c-5-18 1-31 11-40 2-9 11-16 21-16 6-6 19-5 26 3 15 1 25 19 23 36-1 21-12 38-38 40C35 92 18 83 13 66Z" fill="#744d80" />
@@ -12,9 +16,9 @@ export function MascotArt({ className }: { className?: string }) {
   </svg>
 }
 
-export default function Mascot({ children }: { children: React.ReactNode }) {
+export default function Mascot({ pet, children }: { pet: Pet; children: React.ReactNode }) {
   return <aside className="mascot-tip">
-    <div className="mascot-portrait"><MascotArt /></div>
-    <div><strong>Mochi</strong><p>{children}</p></div>
+    <button type="button" className="mascot-portrait" onClick={() => playSound('pet-happy')} aria-label={`Say hello to ${pet.name}`}><PetArt type={pet.type} evolution={pet.evolution} accessories={pet.accessories} /></button>
+    <div><strong>{pet.name}</strong><p>{children}</p></div>
   </aside>
 }

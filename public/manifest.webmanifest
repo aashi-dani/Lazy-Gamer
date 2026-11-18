@@ -5,6 +5,7 @@
   "description": "Grow a little town and crack clever cheat codes.",
   "start_url": "/",
   "scope": "/",
+  "orientation": "any",
   "display": "standalone",
   "background_color": "#151528",
   "theme_color": "#151528",

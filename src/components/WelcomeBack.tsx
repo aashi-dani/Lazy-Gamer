@@ -1,12 +1,22 @@
+import { buildingIds, buildings, type BuildingId } from '../config/gameConfig'
+import { guide } from '../data/guide'
+import { Guide } from './Guide'
 import { Icon } from './Icon'
-import { MascotArt } from './Mascot'
 import Modal from './Modal'
 
-export default function WelcomeBack({ stock, dismiss }: { stock: number; dismiss: () => void }) {
+export default function WelcomeBack({ stock, player, pet, dismiss }: {
+  stock: Partial<Record<BuildingId, number>>
+  player: string
+  pet: string
+  dismiss: () => void
+}) {
   return <Modal title="Welcome back!" onDismiss={dismiss}>
     <div className="welcome-content">
-      <MascotArt />
-      <p>Your town made <strong>{stock} stock</strong> while you were away.</p>
+      <Guide face="waving">{guide.welcome(player || 'shopkeeper', pet)}</Guide>
+      <ul className="unlocks">{buildingIds.map((id) => {
+        const amount = stock[id]
+        return amount ? <li key={id}>{buildings[id].name} <strong>+{amount} {amount === 1 ? buildings[id].stockUnit : buildings[id].stockName}</strong></li> : null
+      })}</ul>
       <button className="button gold-button" onClick={dismiss}>See my town <Icon name="arrow" size={19} /></button>
     </div>
   </Modal>

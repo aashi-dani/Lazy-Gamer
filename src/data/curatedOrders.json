@@ -1,0 +1,37 @@
+{
+  "spinnerRounds": [
+    { "red": 3, "blue": 5, "spins": 40 },
+    { "red": 5, "blue": 2, "spins": 35 },
+    { "red": 2, "blue": 7, "spins": 54 },
+    { "red": 4, "blue": 4, "spins": 64 },
+    { "red": 6, "blue": 5, "spins": 77 },
+    { "red": 5, "blue": 6, "spins": 88 }
+  ],
+  "mysteryGrids": [
+    {
+      "diners": ["Sage", "Indy", "Luz"],
+      "orders": ["Buns", "Milk", "Plums"],
+      "clues": ["Each customer ordered a different food.", "Luz ordered plums.", "Sage did not order milk."]
+    },
+    {
+      "diners": ["Ari", "Bo", "Fern"],
+      "orders": ["Jam", "Toast", "Pears"],
+      "clues": ["Each customer ordered a different food.", "Ari ordered jam.", "Fern did not order toast."]
+    },
+    {
+      "diners": ["Jun", "Rio", "Syl"],
+      "orders": ["Cake", "Rice", "Apples"],
+      "clues": ["Each customer ordered a different food.", "Rio ordered rice.", "Jun did not order apples."]
+    },
+    {
+      "diners": ["Paz", "Cleo", "Avi"],
+      "orders": ["Noodles", "Peaches", "Tea"],
+      "clues": ["Each customer ordered a different food.", "Paz ordered noodles.", "Cleo did not order tea."]
+    },
+    {
+      "diners": ["Mae", "Kit", "Tess"],
+      "orders": ["Oranges", "Bread", "Dates"],
+      "clues": ["Each customer ordered a different food.", "Tess ordered dates.", "Kit did not order oranges."]
+    }
+  ]
+}

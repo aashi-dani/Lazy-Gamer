@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 162 128">
+  <ellipse cx="79" cy="113" rx="69" ry="10" fill="#182137" opacity=".22" />
+  <g stroke-linejoin="round">
+    <path d="M23 112 116 112 146 96 49 96Z" fill="#8f514c"/>
+    <path d="M26 54h87v56H26z" fill="#f6b873" />
+    <path d="M113 54l28-15v56l-28 15Z" fill="#c57456"/>
+    <rect x="35" y="65" width="67" height="33" rx="3" fill="#74424c"/>
+    <path d="M38 66h62v28H38z" fill="#564352"/>
+    <path d="M28 90h82v10H28z" fill="#ffdb91"/>
+    <path d="M110 90l27-13v10l-27 13Z" fill="#d8915e"/>
+    <path d="M27 102h83m-66-2v9m46-9v9" stroke="#d48d58" stroke-width="2"/>
+    <path d="M117 66l19-10v16l-19 10Z" fill="#f1a570"/>
+    <path d="m118 67 15-7v9l-15 8Z" fill="#f9cc91"/>
+    <path d="M21 55 39 28 132 28 109 55Z" fill="#ffe58b"/>
+    <path d="m39 28 11 0-18 27H21zm28 0h13L61 55H47zm30 0h13L92 55H78zm29 0h6l-23 27h-9z" fill="#fa9383"/>
+    <path d="M109 55 132 28l13 4 4 10-37 20Z" fill="#e98172"/>
+    <path d="M21 54h90v6c0 7-13 9-16 1-3 8-14 8-17 0-3 8-14 8-17 0-3 8-13 8-16 0-3 8-13 8-16 0-3 7-8 3-8-1Z" fill="#ffe395"/>
+    <path d="M21 55h12v8c-5 6-12 2-12-3zm25 0h15v6c-3 8-12 8-15 0zm32 0h17v6c-3 8-14 8-17 0z" fill="#f78c81"/>
+    <rect x="57" y="16" width="40" height="22" rx="8" fill="#634040"/>
+    <rect x="58" y="13" width="39" height="22" rx="8" fill="#c27d4f" stroke="#ffe497" stroke-width="2"/>
+    <path d="M71 25c0-5 4-9 8-8 5 1 7 7 4 11-3 5-12 5-12-3Z" fill="#83463b"/><path d="M72 22c1-3 5-5 8-4 1 2-1 5-5 6-1 1-2 0-3-2Z" fill="#fff2c0"/>
+    <path d="M48 89c-2-5 3-10 7-9 4 1 6 5 4 9m2 0c-2-5 3-10 7-9 4 1 6 5 4 9m7 0c-2-4 1-9 5-9 4 0 6 4 5 9" fill="#a96857" stroke="#432e35" stroke-width="2"/>
+    <path d="M50 83l3-1m11 1 3-1m15 2 2-1" stroke="#fff0b7" stroke-width="2" stroke-linecap="round"/>
+    <path d="M13 112c-8-7-5-14 3-13-3-6 1-10 5-7 5 4 6 12 3 19" fill="#75aa82"/>
+    <path d="M130 106c2-11 9-15 13-11s1 10-6 12" fill="#a8bf7c"/>
+  </g>
+<path d="M29 108V50m0 2 23 6-23 10m104 39V66" fill="#c59ce3" stroke="#ede4fb" stroke-width="2"/><circle cx="133" cy="66" r="7" fill="#ffe0a0" stroke="#9772b1" stroke-width="2"/><path d="m34 99 13 5m74 3 12-5" stroke="#8de4c1" stroke-width="4"/></svg>
