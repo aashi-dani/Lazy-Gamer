@@ -14,7 +14,7 @@ it('adapts per topic, stays in the band, and unlocks mastery by accuracy and hig
   for (let i = 0; i < 3; i++) stats = trackAnswer(stats, true, 3)
   expect(mastery(stats)).toBe(1)
   for (let i = 0; i < 24; i++) stats = trackAnswer(stats, true, 3)
-  expect(stats.offset).toBe(1)
+  expect(stats?.offset).toBe(1)
   expect(mastery(stats)).toBe(2)
   const advanced = trackAnswer(stats, true, 4)
   expect(mastery(advanced)).toBe(3)
