@@ -30,9 +30,9 @@ jobs:
           xcodebuild -project ios/App/App.xcodeproj -scheme App \
             -destination 'generic/platform=iOS Simulator' -configuration Debug \
             -derivedDataPath "$RUNNER_TEMP/LazyGamer" ARCHS="$(uname -m)" CODE_SIGNING_ALLOWED=NO build
-      - name: Verify the welcome screen on iPhone and iPad
+      - name: Verify launch and save migration on iPhone and iPad
         run: |
-          cat > "$RUNNER_TEMP/Welcome.swift" <<'SWIFT'
+          cat > "$RUNNER_TEMP/ScreenText.swift" <<'SWIFT'
           import Foundation
           import Vision
 
@@ -41,9 +41,23 @@ jobs:
           try VNImageRequestHandler(url: screenshot).perform([request])
           let text = (request.results ?? []).compactMap { $0.topCandidates(1).first?.string }
               .joined(separator: " ").lowercased()
-          guard text.contains("tap to start") else { exit(1) }
+          let expected = CommandLine.arguments[2].lowercased()
+          guard text.contains(expected) else { exit(1) }
           SWIFT
-          swiftc "$RUNNER_TEMP/Welcome.swift" -o "$RUNNER_TEMP/check-welcome"
+          swiftc "$RUNNER_TEMP/ScreenText.swift" -o "$RUNNER_TEMP/check-screen"
+          bundle=com.aashidani.lazygamer
+          wait_for_screen() {
+            for attempt in {1..12}; do
+              xcrun simctl io "$device" screenshot "$RUNNER_TEMP/$family.png"
+              if "$RUNNER_TEMP/check-screen" "$RUNNER_TEMP/$family.png" "$1"; then
+                echo "$family screen confirmed: $1"
+                return 0
+              fi
+              sleep 2
+            done
+            echo "::error::$family did not show $1"
+            return 1
+          }
           for family in iPhone iPad; do
             device=$(xcrun simctl list devices available --json | python3 -c '
           import json, sys
@@ -54,15 +68,36 @@ jobs:
             xcrun simctl boot "$device"
             xcrun simctl bootstatus "$device" -b
             xcrun simctl install "$device" "$RUNNER_TEMP/LazyGamer/Build/Products/Debug-iphonesimulator/App.app"
-            xcrun simctl launch "$device" com.aashidani.lazygamer
-            for attempt in {1..10}; do
-              xcrun simctl io "$device" screenshot "$RUNNER_TEMP/$family.png"
-              if "$RUNNER_TEMP/check-welcome" "$RUNNER_TEMP/$family.png"; then
-                echo "$family welcome screen confirmed"
-                break
-              fi
-              sleep 2
-            done
-            "$RUNNER_TEMP/check-welcome" "$RUNNER_TEMP/$family.png"
+            xcrun simctl launch "$device" "$bundle"
+            wait_for_screen "Tap to start"
+            xcrun simctl terminate "$device" "$bundle"
+
+            data=$(xcrun simctl get_app_container "$device" "$bundle" data)
+            mkdir -p "$data/Library/LazyGamer"
+            save="$data/Library/LazyGamer/town.json"
+            python3 - "$save" <<'PY'
+          import json, sys, time
+          town = {
+              "band": "explorer", "playerName": "Clover", "coins": 680,
+              "lastAt": int(time.time() * 1000), "lifetimeCoinsEarned": 300,
+              "buildings": {"coconut": {"level": 1, "stock": 2}, "bike": {"level": 1, "stock": 0}},
+              "tutorialSeen": True, "guidedSeen": True, "sound": False,
+          }
+          with open(sys.argv[1], "w") as saved:
+              json.dump({"version": 6, "state": {"town": town}}, saved)
+          PY
+            xcrun simctl launch "$device" "$bundle"
+            wait_for_screen "Build town"
+            python3 - "$save" <<'PY'
+          import json, sys
+          with open(sys.argv[1]) as saved:
+              record = json.load(saved)
+          town = record["state"]["town"]
+          assert record["version"] == 7, "The version 6 save was not rewritten"
+          assert town["coins"] == 680 and "bike" in town["buildings"], "The sample town changed after migration"
+          PY
+            xcrun simctl terminate "$device" "$bundle"
+            xcrun simctl launch "$device" "$bundle"
+            wait_for_screen "Build town"
             xcrun simctl shutdown "$device"
           done
